@@ -2,7 +2,7 @@
 
 @if($settings->shouldRender())
     @php($user = $settings->identify_users ? auth()->user() : null)
-    <script type="text/javascript">
+    <script @if(\Illuminate\Support\Facades\Vite::cspNonce()) nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}" @endif type="text/javascript">
         var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
         @if(filled(data_get($user, 'email')))
         Tawk_API.visitor = { name: @js((string) data_get($user, 'name')), email: @js((string) data_get($user, 'email')) };
