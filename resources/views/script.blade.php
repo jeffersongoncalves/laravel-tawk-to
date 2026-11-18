@@ -1,8 +1,11 @@
+@php
+    $cookieConsent = function_exists('cookie_consent_script_attributes') ? cookie_consent_script_attributes('tawk-to') : '';
+@endphp
 @php($settings = app(\JeffersonGoncalves\TawkTo\Settings\TawkToSettings::class))
 
 @if($settings->shouldRender())
     @php($user = $settings->identify_users ? auth()->user() : null)
-    <script @if(\Illuminate\Support\Facades\Vite::cspNonce()) nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}" @endif type="text/javascript">
+    <script{!! $cookieConsent !!} @if(\Illuminate\Support\Facades\Vite::cspNonce()) nonce="{{ \Illuminate\Support\Facades\Vite::cspNonce() }}" @endif>
         var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
         @if(filled(data_get($user, 'email')))
         Tawk_API.visitor = { name: @js((string) data_get($user, 'name')), email: @js((string) data_get($user, 'email')) };
